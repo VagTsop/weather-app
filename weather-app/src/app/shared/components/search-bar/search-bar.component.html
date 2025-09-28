@@ -10,6 +10,12 @@
   <button class="search-btn" (click)="search()">Search</button>
 </div>
 
+<!-- Search in progress pill -->
+<div class="progress-pill" *ngIf="searching()">
+  <img src="assets/icon-loading.svg" alt="" />
+  <span>Search in progress</span>
+</div>
+
 <div class="results" *ngIf="results().length">
   <div class="card list">
     <div class="item" *ngFor="let p of results()" (click)="pick(p)">

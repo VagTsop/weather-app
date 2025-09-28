@@ -10,21 +10,24 @@
 }
 .search-input input {
   width: 100%;
-  padding: 12px 44px 12px 44px;
+  padding: 12px 44px;
   background: #2e314a;
   color: #fff;
   border: 0;
   border-radius: 12px;
 }
-.search-input .search-icon {
+.search-input input:focus-visible {
+  outline: 2px solid #5c6cff;
+  outline-offset: 2px;
+}
+.search-icon {
   position: absolute;
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
-  opacity: 0.8;
-  pointer-events: none;
+  opacity: 0.85;
 }
 .search-btn {
   padding: 10px 16px;
@@ -33,7 +36,9 @@
   color: #fff;
   border: 0;
 }
-
+.search-btn:hover {
+  filter: brightness(1.05);
+}
 .results {
   display: flex;
   justify-content: center;
@@ -49,4 +54,22 @@
 }
 .item:hover {
   background: #2b2e48;
+}
+
+/* pill under the search bar */
+.progress-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(640px, 100%);
+  margin: 6px auto 0;
+  background: #2b2e48;
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #cfd3e6;
+  font-size: 14px;
+}
+.progress-pill img {
+  width: 16px;
+  height: 16px;
 }

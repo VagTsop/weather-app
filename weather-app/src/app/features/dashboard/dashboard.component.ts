@@ -1,8 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { WeatherStore } from '../../core/stores/weather.store';
 import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
 import { WeatherIconComponent } from '../../shared/components/weather-icon/weather-icon.component';
-import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +17,20 @@ export class DashboardComponent {
   Math = Math;
 
   onPlace(p: { latitude: number; longitude: number; name: string }) {
+    // Coerce to numbers and validate
+    const lat = Number(p?.latitude);
+    const lon = Number(p?.longitude);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+      console.warn('Invalid coordinates from search:', p);
+      return;
+    }
+
     this.store.city.set(p.name);
-    this.store.fetch(p.latitude, p.longitude);
+    this.store.fetch(lat, lon);
+  }
+
+  retry() {
+    const c = this.store.coords();
+    if (c) this.store.fetch(c.lat, c.lon);
   }
 }

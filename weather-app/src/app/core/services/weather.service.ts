@@ -20,28 +20,46 @@ export class WeatherService {
   constructor(private http: HttpClient) {}
   private cache = new Map<string, { t: number; data: Packed }>();
   private key(lat: number, lon: number, u: Units) {
-    return `${lat.toFixed(3)}|${lon.toFixed(3)}|${u.temp}|${u.wind}|${
-      u.precip
-    }`;
+    const la = Number(lat);
+    const lo = Number(lon);
+
+    // fallbacks for units in case something is off
+    const temp = u?.temp ?? 'c';
+    const wind = u?.wind ?? 'kmh';
+    const precip = u?.precip ?? 'mm';
+
+    if (!Number.isFinite(la) || !Number.isFinite(lo)) {
+      // don't throw – still produce a cache key
+      return `${lat}|${lon}|${temp}|${wind}|${precip}`;
+    }
+    return `${la.toFixed(3)}|${lo.toFixed(3)}|${temp}|${wind}|${precip}`;
   }
 
   get(lat: number, lon: number, units: Units): Observable<Packed> {
+    const la = Number(lat);
+    const lo = Number(lon);
+
+    // Optional early guard: if somehow invalid, short-circuit a clear error
+    if (!Number.isFinite(la) || !Number.isFinite(lo)) {
+      throw new Error(`Invalid coordinates: lat=${lat}, lon=${lon}`);
+    }
+
     const ttl = 1000 * 60;
-    const k = this.key(lat, lon, units);
+    const k = this.key(la, lo, units);
     const c = this.cache.get(k);
     if (c && Date.now() - c.t < ttl) return of(c.data);
 
     const params = new URLSearchParams({
-      latitude: String(lat),
-      longitude: String(lon),
+      latitude: String(la),
+      longitude: String(lo),
       timezone: 'auto',
       current:
         'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation,weather_code',
       hourly: 'temperature_2m,weather_code',
       daily: 'temperature_2m_max,temperature_2m_min,weather_code',
-      temperature_unit: units.temp === 'c' ? 'celsius' : 'fahrenheit',
-      wind_speed_unit: units.wind === 'kmh' ? 'kmh' : 'mph',
-      precipitation_unit: units.precip === 'mm' ? 'mm' : 'inch',
+      temperature_unit: units?.temp === 'f' ? 'fahrenheit' : 'celsius',
+      wind_speed_unit: units?.wind === 'mph' ? 'mph' : 'kmh',
+      precipitation_unit: units?.precip === 'in' ? 'inch' : 'mm',
     });
 
     return this.http

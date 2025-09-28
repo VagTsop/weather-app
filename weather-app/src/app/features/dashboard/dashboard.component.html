@@ -1,84 +1,135 @@
 <section class="page">
   <h1 class="title">How's the sky looking today?</h1>
+  <app-search-bar (select)="onPlace($event)"></app-search-bar>
 
-  <!-- Search row -->
-  <app-search-bar
-    class="search-area"
-    (select)="onPlace($event)"
-  ></app-search-bar>
-
-  <div class="layout">
-    <!-- LEFT -->
-    <div>
-      <!-- HERO / CURRENT -->
-      <div class="hero panel" *ngIf="store.current() as c">
-        <div class="hero-left">
-          <div class="place">{{ store.city() || "—" }}</div>
-          <div class="date">{{ c.timeISO | date : "EEEE, MMM d, y" }}</div>
+  <!-- LOADING -->
+  <ng-container *ngIf="store.loading(); else notLoading">
+    <div class="layout">
+      <div>
+        <div class="panel skeleton hero-skel"></div>
+        <div class="tiles">
+          <div class="panel skeleton" *ngFor="let i of [0, 1, 2, 3]"></div>
         </div>
-
-        <div class="hero-icon">
-          <app-weather-icon [code]="c.code" alt="Current"></app-weather-icon>
-        </div>
-
-        <div class="hero-temp">{{ Math.round(c.temp) }}°</div>
-      </div>
-
-      <!-- METRICS -->
-      <div class="tiles metrics" *ngIf="store.current() as c">
-        <div class="kpi panel">
-          <span class="kpi-label">Feels Like</span>
-          <span class="kpi-value">{{ Math.round(c.apparent) }}°</span>
-        </div>
-        <div class="kpi panel">
-          <span class="kpi-label">Humidity</span>
-          <span class="kpi-value">{{ c.humidity }}%</span>
-        </div>
-        <div class="kpi panel">
-          <span class="kpi-label">Wind</span>
-          <span class="kpi-value">{{ c.wind }}</span>
-        </div>
-        <div class="kpi panel">
-          <span class="kpi-label">Precipitation</span>
-          <span class="kpi-value">{{ c.precip }}</span>
+        <h3 class="section">Daily forecast</h3>
+        <div class="daily">
+          <div
+            class="panel skeleton day-skel"
+            *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]"
+          ></div>
         </div>
       </div>
+      <aside class="panel">
+        <div class="skeleton header-skel"></div>
+        <div class="hourly-list">
+          <div
+            class="skeleton row-skel"
+            *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]"
+          ></div>
+        </div>
+      </aside>
+    </div>
+  </ng-container>
 
-      <!-- DAILY -->
-      <h3 class="section">Daily forecast</h3>
-      <div class="daily">
-        <button
-          class="panel day"
-          *ngFor="let d of store.daily()"
-          (click)="store.selectedDay.set(d.dateISO)"
-          [class.active]="d.dateISO === store.selectedDay()"
-        >
-          <div class="day-name">{{ d.dateISO | date : "EEE" }}</div>
-          <app-weather-icon [code]="d.code"></app-weather-icon>
-          <div class="day-temps">
-            {{ Math.round(d.tmax) }}°
-            <span class="min">{{ Math.round(d.tmin) }}°</span>
-          </div>
+  <ng-template #notLoading>
+    <!-- ERROR -->
+    <ng-container *ngIf="store.error(); else maybeContent">
+      <div class="error-wrap">
+        <img src="assets/icon-error.svg" alt="" />
+        <h2>Something went wrong</h2>
+        <p>
+          We couldn’t connect to the server (API error). Please try again in a
+          few moments.
+        </p>
+        <button class="retry" (click)="retry()">
+          <img src="assets/icon-retry.svg" alt="" /> Retry
         </button>
       </div>
-    </div>
+    </ng-container>
 
-    <!-- RIGHT -->
-    <aside class="panel hourly-panel" *ngIf="hours().length">
-      <div class="hourly-header">
-        <span>Hourly forecast</span>
-        <span class="chip">{{ store.selectedDay() | date : "EEEE" }}</span>
-      </div>
+    <!-- EMPTY or CONTENT -->
+    <ng-template #maybeContent>
+      <ng-container *ngIf="store.current(); else empty">
+        <!-- ======= LOADED LAYOUT ======= -->
+        <div class="layout">
+          <!-- LEFT -->
+          <div>
+            <!-- HERO -->
+            <div class="hero panel" *ngIf="store.current() as c">
+              <div class="hero-left">
+                <div class="place">{{ store.city() || "—" }}</div>
+                <div class="date">
+                  {{ c.timeISO | date : "EEEE, MMM d, y" }}
+                </div>
+              </div>
+              <div class="hero-icon">
+                <app-weather-icon [code]="c.code"></app-weather-icon>
+              </div>
+              <div class="hero-temp">{{ Math.round(c.temp) }}°</div>
+            </div>
 
-      <div class="hourly-list">
-        <div class="hour-row" *ngFor="let h of hours()">
-          <div class="hour-time">{{ h.timeISO | date : "h a" }}</div>
-          <div class="hour-icon">
-            <app-weather-icon [code]="h.code"></app-weather-icon>
+            <!-- KPIs -->
+            <div class="tiles metrics" *ngIf="store.current() as c">
+              <div class="kpi panel">
+                <span class="kpi-label">Feels Like</span
+                ><span class="kpi-value">{{ Math.round(c.apparent) }}°</span>
+              </div>
+              <div class="kpi panel">
+                <span class="kpi-label">Humidity</span
+                ><span class="kpi-value">{{ c.humidity }}%</span>
+              </div>
+              <div class="kpi panel">
+                <span class="kpi-label">Wind</span
+                ><span class="kpi-value">{{ c.wind }}</span>
+              </div>
+              <div class="kpi panel">
+                <span class="kpi-label">Precipitation</span
+                ><span class="kpi-value">{{ c.precip }}</span>
+              </div>
+            </div>
+
+            <!-- DAILY -->
+            <h3 class="section">Daily forecast</h3>
+            <div class="daily">
+              <button
+                class="panel day"
+                *ngFor="let d of store.daily()"
+                (click)="store.selectedDay.set(d.dateISO)"
+                [class.active]="d.dateISO === store.selectedDay()"
+              >
+                <div class="day-name">{{ d.dateISO | date : "EEE" }}</div>
+                <app-weather-icon [code]="d.code"></app-weather-icon>
+                <div class="day-temps">
+                  {{ Math.round(d.tmax) }}°
+                  <span class="min">{{ Math.round(d.tmin) }}°</span>
+                </div>
+              </button>
+            </div>
           </div>
-          <div class="hour-temp">{{ Math.round(h.temp) }}°</div>
+
+          <!-- RIGHT -->
+          <aside class="panel hourly-panel" *ngIf="hours().length">
+            <div class="hourly-header">
+              <span>Hourly forecast</span>
+              <span class="chip">{{
+                store.selectedDay() | date : "EEEE"
+              }}</span>
+            </div>
+            <div class="hourly-list">
+              <div class="hour-row" *ngFor="let h of hours()">
+                <div class="hour-time">{{ h.timeISO | date : "h a" }}</div>
+                <div class="hour-icon">
+                  <app-weather-icon [code]="h.code"></app-weather-icon>
+                </div>
+                <div class="hour-temp">{{ Math.round(h.temp) }}°</div>
+              </div>
+            </div>
+          </aside>
         </div>
-      </div>
-    </aside>
-  </div>
+      </ng-container>
+
+      <ng-template #empty>
+        <p class="empty">No search result found!</p>
+      </ng-template>
+    </ng-template>
+  </ng-template>
 </section>

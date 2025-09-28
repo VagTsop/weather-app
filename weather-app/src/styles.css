@@ -1,0 +1,133 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "DM Sans";
+  src: url("/assets/fonts/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/Bricolage_Grotesque/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf") format("truetype");
+  font-weight: 100 900;
+}
+:root {
+  --bg: #0b0d2a;
+  --card: #23253a;
+  --muted: #9aa0b4;
+  --text: #ffffff;
+  --accent: #5c6cff;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+.container {
+  max-width: 1120px;
+  margin: 24px auto;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 0 16px;
+}
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.current-weather {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  padding: 32px;
+  color: #fff;
+  min-height: 180px;
+
+  background: url("assets/bg-today-large.svg") no-repeat center/cover;
+
+  .temp {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+  }
+
+  .meta {
+    font-size: 18px;
+    opacity: 0.85;
+    margin-top: 8px;
+  }
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: #4650ff;
+  color: #fff;
+  cursor: pointer;
+}
+input {
+  border: 0;
+  border-radius: 12px;
+  background: #2e314a;
+  color: #fff;
+  padding: 12px 14px;
+  width: 100%;
+}
+.page {
+  max-width: 1120px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.6fr 0.9fr;
+  gap: 24px;
+}
+
+@media (max-width: 920px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (max-width: 720px) {
+  .tiles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.panel {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.current-weather {
+  background: url("assets/bg-today-large.svg") no-repeat center/cover;
+  border-radius: 20px;
+  padding: 32px;
+  color: #fff;
+  min-height: 180px;
+}

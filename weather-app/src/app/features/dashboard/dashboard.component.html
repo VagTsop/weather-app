@@ -1,47 +1,61 @@
 <section class="page">
   <h1 class="title">How's the sky looking today?</h1>
-  <app-search-bar (select)="onPlace($event)"></app-search-bar>
+
+  <!-- Search row -->
+  <app-search-bar
+    class="search-area"
+    (select)="onPlace($event)"
+  ></app-search-bar>
 
   <div class="layout">
     <!-- LEFT -->
     <div>
-      <div class="current-weather panel" *ngIf="store.current() as c">
-        <div>
-          <div class="temp">{{ Math.round(c.temp) }}°</div>
-          <div class="meta">
-            Feels like {{ Math.round(c.apparent) }}°, Humidity
-            {{ c.humidity }}%, Wind {{ c.wind }}
-          </div>
+      <!-- HERO / CURRENT -->
+      <div class="hero panel" *ngIf="store.current() as c">
+        <div class="hero-left">
+          <div class="place">{{ store.city() || "—" }}</div>
+          <div class="date">{{ c.timeISO | date : "EEEE, MMM d, y" }}</div>
         </div>
-        <app-weather-icon [code]="c.code"></app-weather-icon>
+
+        <div class="hero-icon">
+          <app-weather-icon [code]="c.code" alt="Current"></app-weather-icon>
+        </div>
+
+        <div class="hero-temp">{{ Math.round(c.temp) }}°</div>
       </div>
 
-      <div class="tiles metrics">
-        <div class="panel">
-          Feels Like<br />
-          <b>{{ Math.round(store.current()?.apparent || 0) }}°</b>
+      <!-- METRICS -->
+      <div class="tiles metrics" *ngIf="store.current() as c">
+        <div class="kpi panel">
+          <span class="kpi-label">Feels Like</span>
+          <span class="kpi-value">{{ Math.round(c.apparent) }}°</span>
         </div>
-        <div class="panel">
-          Humidity<br /><b>{{ store.current()?.humidity }}%</b>
+        <div class="kpi panel">
+          <span class="kpi-label">Humidity</span>
+          <span class="kpi-value">{{ c.humidity }}%</span>
         </div>
-        <div class="panel">
-          Wind<br /><b>{{ store.current()?.wind }}</b>
+        <div class="kpi panel">
+          <span class="kpi-label">Wind</span>
+          <span class="kpi-value">{{ c.wind }}</span>
         </div>
-        <div class="panel">
-          Precipitation<br /><b>{{ store.current()?.precip }}</b>
+        <div class="kpi panel">
+          <span class="kpi-label">Precipitation</span>
+          <span class="kpi-value">{{ c.precip }}</span>
         </div>
       </div>
 
+      <!-- DAILY -->
       <h3 class="section">Daily forecast</h3>
       <div class="daily">
         <button
           class="panel day"
           *ngFor="let d of store.daily()"
           (click)="store.selectedDay.set(d.dateISO)"
+          [class.active]="d.dateISO === store.selectedDay()"
         >
-          <div>{{ d.dateISO | date : "EEE" }}</div>
+          <div class="day-name">{{ d.dateISO | date : "EEE" }}</div>
           <app-weather-icon [code]="d.code"></app-weather-icon>
-          <div>
+          <div class="day-temps">
             {{ Math.round(d.tmax) }}°
             <span class="min">{{ Math.round(d.tmin) }}°</span>
           </div>
@@ -50,13 +64,19 @@
     </div>
 
     <!-- RIGHT -->
-    <aside class="panel" *ngIf="hours().length">
-      <h3>Hourly forecast — {{ store.selectedDay() | date : "EEEE" }}</h3>
-      <div class="hourly">
-        <div class="panel hour" *ngFor="let h of hours()">
-          <div>{{ h.timeISO | date : "h a" }}</div>
-          <app-weather-icon [code]="h.code"></app-weather-icon>
-          <div>{{ Math.round(h.temp) }}°</div>
+    <aside class="panel hourly-panel" *ngIf="hours().length">
+      <div class="hourly-header">
+        <span>Hourly forecast</span>
+        <span class="chip">{{ store.selectedDay() | date : "EEEE" }}</span>
+      </div>
+
+      <div class="hourly-list">
+        <div class="hour-row" *ngFor="let h of hours()">
+          <div class="hour-time">{{ h.timeISO | date : "h a" }}</div>
+          <div class="hour-icon">
+            <app-weather-icon [code]="h.code"></app-weather-icon>
+          </div>
+          <div class="hour-temp">{{ Math.round(h.temp) }}°</div>
         </div>
       </div>
     </aside>

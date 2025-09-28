@@ -1,72 +1,169 @@
-.title {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-size: 40px;
-  margin: 8px 0;
-}
-
+/* Page / Title */
 .page {
   max-width: 1120px;
   margin: 24px auto;
   padding: 0 16px;
 }
+.title {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 40px;
+  margin: 8px 0 16px;
+  text-align: center;
+}
 
+/* Search spacing (component provides its own internal styles) */
+.search-area {
+  display: block;
+  max-width: 640px;
+  margin: 0 auto 16px;
+}
+
+/* Two columns */
 .layout {
   display: grid;
   grid-template-columns: 1.6fr 0.9fr;
   gap: 24px;
 }
-
 @media (max-width: 920px) {
   .layout {
     grid-template-columns: 1fr;
   }
 }
 
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 16px;
-}
-
-@media (max-width: 720px) {
-  .tiles {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
+/* Generic panel */
 .panel {
   background: var(--card);
   border-radius: 16px;
   padding: 16px;
 }
 
-.current-weather {
+/* HERO card */
+.hero {
   background: url("../../../assets/bg-today-large.svg") no-repeat center/cover;
-  border-radius: 20px;
-  padding: 32px;
-  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
   min-height: 180px;
+  padding: 24px 28px;
+  color: #fff;
+}
+.hero-left .place {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+.hero-left .date {
+  opacity: 0.9;
+}
+.hero-icon app-weather-icon img {
+  width: 44px;
+  height: 44px;
+}
+.hero-temp {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 76px;
+  font-weight: 800;
+  line-height: 1;
 }
 
+/* Metrics tiles */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+@media (max-width: 720px) {
+  .tiles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.kpi {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+}
+.kpi-label {
+  color: var(--muted);
+  font-size: 14px;
+}
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Daily card row */
+.section {
+  margin: 20px 0 10px;
+}
 .daily {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
-
 .day {
   width: 110px;
   text-align: center;
   cursor: pointer;
+  padding: 14px 10px;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+.day:hover {
+  background: #2b2e48;
+  transform: translateY(-2px);
+}
+.day.active {
+  outline: 2px solid #5c6cff;
+}
+.day-name {
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.day-temps {
+  margin-top: 6px;
+}
+.min {
+  opacity: 0.65;
 }
 
-.hourly {
+/* Hourly panel */
+.hourly-panel {
+  padding: 16px;
+}
+.hourly-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.chip {
+  background: #2b2e48;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #cfd3e6;
+}
+
+.hourly-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
-.min {
-  opacity: 0.7;
+.hour-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  background: #2b2e48;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.hour-time {
+  color: #cfd3e6;
+}
+.hour-temp {
+  margin-left: auto;
 }

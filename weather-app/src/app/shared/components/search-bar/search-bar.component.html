@@ -1,10 +1,13 @@
 <div class="search-row">
-  <input
-    placeholder="Search for a place..."
-    [(ngModel)]="q"
-    (keyup.enter)="search()"
-  />
-  <button (click)="search()">Search</button>
+  <div class="search-input">
+    <input
+      placeholder="Search for a place..."
+      [(ngModel)]="q"
+      (keyup.enter)="search()"
+    />
+    <img class="search-icon" src="assets/icon-search.svg" alt="" />
+  </div>
+  <button class="search-btn" (click)="search()">Search</button>
 </div>
 
 <div class="results" *ngIf="results().length">

@@ -4,12 +4,8 @@ import { UnitsStore } from '../../../core/stores/units.store';
 @Component({
   selector: 'app-units-dropdown',
   standalone: true,
-  template: `
-    <button (click)="toggle()">
-      <img src="assets/icon-units.svg" alt="Units" width="16" height="16" />
-      Units
-    </button>
-  `,
+  templateUrl: './units-dropdown.component.html',
+  styleUrls: ['./units-dropdown.component.css'],
 })
 export class UnitsDropdownComponent {
   private store = inject(UnitsStore);

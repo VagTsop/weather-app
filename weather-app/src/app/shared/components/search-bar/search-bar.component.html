@@ -1,0 +1,16 @@
+<div class="search-row">
+  <input
+    placeholder="Search for a place..."
+    [(ngModel)]="q"
+    (keyup.enter)="search()"
+  />
+  <button (click)="search()">Search</button>
+</div>
+
+<div class="results" *ngIf="results().length">
+  <div class="card list">
+    <div class="item" *ngFor="let p of results()" (click)="pick(p)">
+      {{ p.name }}, {{ p.country }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<section class="page">
+  <h1 class="title">How's the sky looking today?</h1>
+  <app-search-bar (select)="onPlace($event)"></app-search-bar>
+
+  <div class="layout">
+    <!-- LEFT -->
+    <div>
+      <div class="current-weather panel" *ngIf="store.current() as c">
+        <div>
+          <div class="temp">{{ Math.round(c.temp) }}°</div>
+          <div class="meta">
+            Feels like {{ Math.round(c.apparent) }}°, Humidity
+            {{ c.humidity }}%, Wind {{ c.wind }}
+          </div>
+        </div>
+        <app-weather-icon [code]="c.code"></app-weather-icon>
+      </div>
+
+      <div class="tiles metrics">
+        <div class="panel">
+          Feels Like<br />
+          <b>{{ Math.round(store.current()?.apparent || 0) }}°</b>
+        </div>
+        <div class="panel">
+          Humidity<br /><b>{{ store.current()?.humidity }}%</b>
+        </div>
+        <div class="panel">
+          Wind<br /><b>{{ store.current()?.wind }}</b>
+        </div>
+        <div class="panel">
+          Precipitation<br /><b>{{ store.current()?.precip }}</b>
+        </div>
+      </div>
+
+      <h3 class="section">Daily forecast</h3>
+      <div class="daily">
+        <button
+          class="panel day"
+          *ngFor="let d of store.daily()"
+          (click)="store.selectedDay.set(d.dateISO)"
+        >
+          <div>{{ d.dateISO | date : "EEE" }}</div>
+          <app-weather-icon [code]="d.code"></app-weather-icon>
+          <div>
+            {{ Math.round(d.tmax) }}°
+            <span class="min">{{ Math.round(d.tmin) }}°</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <aside class="panel" *ngIf="hours().length">
+      <h3>Hourly forecast — {{ store.selectedDay() | date : "EEEE" }}</h3>
+      <div class="hourly">
+        <div class="panel hour" *ngFor="let h of hours()">
+          <div>{{ h.timeISO | date : "h a" }}</div>
+          <app-weather-icon [code]="h.code"></app-weather-icon>
+          <div>{{ Math.round(h.temp) }}°</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>

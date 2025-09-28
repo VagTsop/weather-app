@@ -1,14 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+/* GLOBAL ONLY: tokens, base, utilities */
+
 @font-face {
   font-family: "DM Sans";
-  src: url("/assets/fonts/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("assets/fonts/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype");
   font-weight: 100 900;
 }
 @font-face {
   font-family: "Bricolage Grotesque";
-  src: url("/assets/fonts/Bricolage_Grotesque/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf") format("truetype");
+  src: url("assets/fonts/Bricolage_Grotesque/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf") format("truetype");
   font-weight: 100 900;
 }
+
 :root {
   --bg: #0b0d2a;
   --card: #23253a;
@@ -16,6 +18,7 @@
   --text: #ffffff;
   --accent: #5c6cff;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -23,12 +26,15 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: "DM Sans", system-ui, sans-serif;
 }
+
+/* site-wide header wrapper (keep if used in app.component.html) */
 .container {
   max-width: 1120px;
   margin: 24px auto;
@@ -37,40 +43,12 @@ body {
   align-items: center;
   padding: 0 16px;
 }
-.card {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 16px;
-}
 
-.current-weather {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 20px;
-  padding: 32px;
-  color: #fff;
-  min-height: 180px;
-
-  background: url("assets/bg-today-large.svg") no-repeat center/cover;
-
-  .temp {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 72px;
-    font-weight: 700;
-  }
-
-  .meta {
-    font-size: 18px;
-    opacity: 0.85;
-    margin-top: 8px;
-  }
-}
-
+/* small utilities & element base */
 .ml-auto {
   margin-left: auto;
 }
+
 button {
   border: 0;
   border-radius: 12px;
@@ -79,6 +57,7 @@ button {
   color: #fff;
   cursor: pointer;
 }
+
 input {
   border: 0;
   border-radius: 12px;
@@ -86,48 +65,4 @@ input {
   color: #fff;
   padding: 12px 14px;
   width: 100%;
-}
-.page {
-  max-width: 1120px;
-  margin: 24px auto;
-  padding: 0 16px;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 1.6fr 0.9fr;
-  gap: 24px;
-}
-
-@media (max-width: 920px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 16px;
-}
-
-@media (max-width: 720px) {
-  .tiles {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.panel {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 16px;
-}
-
-.current-weather {
-  background: url("assets/bg-today-large.svg") no-repeat center/cover;
-  border-radius: 20px;
-  padding: 32px;
-  color: #fff;
-  min-height: 180px;
 }

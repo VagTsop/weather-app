@@ -1,0 +1,21 @@
+.search-row {
+  display: flex;
+  gap: 12px;
+  margin: 24px 0;
+}
+.results {
+  margin-top: 8px;
+}
+.list {
+  padding: 0;
+}
+.item {
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.item:hover {
+  background: #2b2e48;
+}
+input {
+  flex: 1;
+}

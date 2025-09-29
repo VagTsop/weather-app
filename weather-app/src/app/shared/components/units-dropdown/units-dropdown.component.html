@@ -1,4 +1,72 @@
-<button class="units" (click)="toggle()">
-  <img src="assets/icon-units.svg" alt="Units" width="16" height="16" />
-  Units
-</button>
+<div class="menu-wrap" [class.open]="open()">
+  <button
+    class="units"
+    (click)="toggleMenu()"
+    aria-haspopup="menu"
+    [attr.aria-expanded]="open()"
+  >
+    <img src="assets/icon-units.svg" alt="" width="16" height="16" />
+    Units
+    <img class="chev" src="assets/icon-dropdown.svg" alt="" />
+  </button>
+
+  @if (open()) {
+  <div class="menu">
+    <div class="group">
+      <div class="title">System</div>
+      <button (click)="toggleSystem()">
+        Switch to
+        {{ store.units().system === "metric" ? "Imperial" : "Metric" }}
+      </button>
+    </div>
+
+    <div class="group">
+      <div class="title">Temperature</div>
+      <button
+        [class.active]="store.units().temp === 'c'"
+        (click)="setTemp('c')"
+      >
+        Celsius (°C)
+      </button>
+      <button
+        [class.active]="store.units().temp === 'f'"
+        (click)="setTemp('f')"
+      >
+        Fahrenheit (°F)
+      </button>
+    </div>
+
+    <div class="group">
+      <div class="title">Wind Speed</div>
+      <button
+        [class.active]="store.units().wind === 'kmh'"
+        (click)="setWind('kmh')"
+      >
+        km/h
+      </button>
+      <button
+        [class.active]="store.units().wind === 'mph'"
+        (click)="setWind('mph')"
+      >
+        mph
+      </button>
+    </div>
+
+    <div class="group">
+      <div class="title">Precipitation</div>
+      <button
+        [class.active]="store.units().precip === 'mm'"
+        (click)="setPrecip('mm')"
+      >
+        Millimeters (mm)
+      </button>
+      <button
+        [class.active]="store.units().precip === 'in'"
+        (click)="setPrecip('in')"
+      >
+        Inches (in)
+      </button>
+    </div>
+  </div>
+  }
+</div>

@@ -1,6 +1,8 @@
 <section class="page">
   <h1 class="title">How's the sky looking today?</h1>
   <app-search-bar (select)="onPlace($event)"></app-search-bar>
+  <app-use-location (coords)="onGeo($event)"></app-use-location>
+  <app-favorites-bar (open)="onFav($event)"></app-favorites-bar>
 
   <!-- LOADING -->
   <ng-container *ngIf="store.loading(); else notLoading">
@@ -54,16 +56,27 @@
           <!-- LEFT -->
           <div>
             <!-- HERO -->
+            <!-- HERO -->
             <div class="hero panel" *ngIf="store.current() as c">
+              <button
+                class="save"
+                (click)="saveCurrent()"
+                title="Save to favorites"
+              >
+                ★
+              </button>
+
               <div class="hero-left">
                 <div class="place">{{ store.city() || "—" }}</div>
                 <div class="date">
                   {{ c.timeISO | date : "EEEE, MMM d, y" }}
                 </div>
               </div>
+
               <div class="hero-icon">
                 <app-weather-icon [code]="c.code"></app-weather-icon>
               </div>
+
               <div class="hero-temp">{{ Math.round(c.temp) }}°</div>
             </div>
 
@@ -107,23 +120,47 @@
           </div>
 
           <!-- RIGHT -->
-          <aside class="panel hourly-panel" *ngIf="hours().length">
+          @if (hours().length) {
+          <aside class="panel hourly-panel">
             <div class="hourly-header">
               <span>Hourly forecast</span>
-              <span class="chip">{{
-                store.selectedDay() | date : "EEEE"
-              }}</span>
+
+              <!-- Day selector dropdown -->
+              <div class="day-menu" [class.open]="openDay">
+                <button class="chip" (click)="openDay = !openDay" type="button">
+                  {{ store.selectedDay() | date : "EEEE" }}
+                  <img src="assets/icon-dropdown.svg" alt="" />
+                </button>
+
+                @if (openDay) {
+                <div class="day-list">
+                  @for (d of store.daily(); track d.dateISO) {
+                  <button
+                    type="button"
+                    [class.active]="d.dateISO === store.selectedDay()"
+                    (click)="store.selectedDay.set(d.dateISO); openDay = false"
+                  >
+                    {{ d.dateISO | date : "EEEE" }}
+                  </button>
+                  }
+                </div>
+                }
+              </div>
             </div>
+
             <div class="hourly-list">
-              <div class="hour-row" *ngFor="let h of hours()">
+              @for (h of hours(); track h.timeISO) {
+              <div class="hour-row">
                 <div class="hour-time">{{ h.timeISO | date : "h a" }}</div>
                 <div class="hour-icon">
                   <app-weather-icon [code]="h.code"></app-weather-icon>
                 </div>
                 <div class="hour-temp">{{ Math.round(h.temp) }}°</div>
               </div>
+              }
             </div>
           </aside>
+          }
         </div>
       </ng-container>
 

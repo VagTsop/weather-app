@@ -1,0 +1,10 @@
+<div class="fav-row" *ngIf="fav.items().length">
+  <span class="label">Favorites:</span>
+  <button
+    class="pill"
+    *ngFor="let f of fav.items()"
+    (click)="open.emit({ lat: f.lat, lon: f.lon, name: f.name })"
+  >
+    {{ f.name }}
+  </button>
+</div>

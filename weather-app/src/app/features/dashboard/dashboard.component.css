@@ -232,3 +232,51 @@
   height: 56px;
   border-radius: 12px;
 }
+.day-menu {
+  position: relative;
+}
+.day-menu .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.day-menu img {
+  width: 12px;
+  height: 12px;
+  opacity: 0.8;
+}
+.day-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: #2b2e48;
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+.day-list button {
+  display: block;
+  width: 180px;
+  text-align: left;
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+.day-list button.active {
+  background: #3a3f62;
+}
+.hero {
+  position: relative;
+}
+.hero .save {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 6px 10px;
+  color: #ffd76a;
+}
+.hero .save:hover {
+  filter: brightness(1.1);
+}

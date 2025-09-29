@@ -1,0 +1,18 @@
+.fav-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 8px 0 16px;
+}
+.label {
+  opacity: 0.8;
+}
+.pill {
+  background: #2b2e48;
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+.pill:hover {
+  filter: brightness(1.05);
+}

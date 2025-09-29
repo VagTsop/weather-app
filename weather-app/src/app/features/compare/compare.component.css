@@ -1,0 +1,137 @@
+/* src/app/features/compare/compare.component.css */
+.page {
+  max-width: 1120px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+.title {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 34px;
+  margin: 8px 0 16px;
+  text-align: center;
+}
+
+.compare-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.search-input {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.search-input input {
+  width: min(640px, 100%);
+  padding: 12px 14px;
+  background: #2e314a;
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+}
+.search-btn {
+  background: #5c6cff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  color: #fff;
+  border: 0;
+}
+.results {
+  display: flex;
+  justify-content: center;
+}
+.list {
+  width: min(640px, 100%);
+  padding: 0;
+  margin-top: 6px;
+}
+.item {
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.item:hover {
+  background: #2b2e48;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.card {
+  padding: 14px;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.head .x {
+  background: #2b2e48;
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+.hero.small {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2b2e48;
+  border-radius: 12px;
+  padding: 12px;
+}
+.hero.small.loading {
+  opacity: 0.6;
+}
+.temp {
+  font-size: 40px;
+  font-weight: 800;
+}
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+.kpis span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.sun {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sun-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+.bar {
+  height: 6px;
+  background: #3a3f62;
+  border-radius: 999px;
+  position: relative;
+}
+.dot {
+  position: absolute;
+  left: 12%;
+  top: -3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffd76a;
+  box-shadow: 0 0 10px #ffd76a;
+}
+.bar.dusk .dot {
+  left: 78%;
+}
+.error {
+  background: #2b2e48;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}

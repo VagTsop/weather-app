@@ -1,0 +1,103 @@
+<!-- src/app/features/compare/compare.component.html -->
+<section class="page">
+  <h1 class="title">Compare locations</h1>
+
+  <div class="compare-bar">
+    <div class="search-input">
+      <input
+        [(ngModel)]="q"
+        (keyup.enter)="search()"
+        placeholder="Search for a city..."
+      />
+      <button class="search-btn" (click)="search()">Add</button>
+    </div>
+    <div class="results" *ngIf="results().length">
+      <div class="card list">
+        <div class="item" *ngFor="let p of results()" (click)="pick(p)">
+          {{ p.name }}<span *ngIf="p.country">, {{ p.country }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel card" *ngFor="let c of cards(); index as i">
+      <div class="head">
+        <b>{{ c.place.name }}</b>
+        <button class="x" (click)="remove(i)">×</button>
+      </div>
+
+      <ng-container *ngIf="!c.error; else err">
+        <div class="hero small" [class.loading]="c.loading">
+          <div class="left">
+            <div class="date">{{ c.timeISO | date : "EEEE, MMM d" }}</div>
+            <div class="temp">
+              {{ c.temp ?? "—" }}<span *ngIf="c.temp !== undefined">°</span>
+            </div>
+          </div>
+          <app-weather-icon
+            *ngIf="c.code !== undefined"
+            [code]="c.code!"
+          ></app-weather-icon>
+        </div>
+
+        <div class="kpis">
+          <div>
+            <span>Feels like</span
+            ><b
+              >{{ c.apparent ?? "—"
+              }}<span *ngIf="c.apparent !== undefined">°</span></b
+            >
+          </div>
+          <div>
+            <span>Humidity</span
+            ><b
+              >{{ c.humidity ?? "—"
+              }}<span *ngIf="c.humidity !== undefined">%</span></b
+            >
+          </div>
+          <div>
+            <span>Wind</span><b>{{ c.wind ?? "—" }}</b>
+          </div>
+          <div>
+            <span>Precip</span><b>{{ c.precip ?? "—" }}</b>
+          </div>
+          <div>
+            <span>UV</span><b>{{ c.uv ?? "—" }}</b>
+          </div>
+          <div>
+            <span>Visibility</span
+            ><b
+              >{{ c.visibilityKm ?? "—" }}
+              <span *ngIf="c.visibilityKm !== null">km</span></b
+            >
+          </div>
+          <div>
+            <span>Pressure</span
+            ><b
+              >{{ c.pressureHpa ?? "—" }}
+              <span *ngIf="c.pressureHpa !== null">hPa</span></b
+            >
+          </div>
+        </div>
+
+        <div class="sun">
+          <div class="sun-row">
+            <span>Sunrise</span>
+            <div class="bar"><span class="dot"></span></div>
+            <span>{{ c.sunriseISO | date : "h:mm a" }}</span>
+          </div>
+          <div class="sun-row">
+            <span>Sunset</span>
+            <div class="bar dusk"><span class="dot"></span></div>
+            <span>{{ c.sunsetISO | date : "h:mm a" }}</span>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #err>
+        <div class="error">API error</div>
+      </ng-template>
+    </div>
+  </div>
+</section>

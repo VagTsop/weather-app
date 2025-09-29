@@ -1,5 +1,18 @@
+<!-- src/app/app.html -->
 <header class="container">
   <img src="assets/logo.svg" alt="Weather Now" height="28" />
-  <app-units-dropdown class="ml-auto"></app-units-dropdown>
+  <a
+    routerLink="/compare"
+    class="ml-auto"
+    style="
+      background: #2b2e48;
+      padding: 8px 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+    "
+    >Compare</a
+  >
+  <app-units-dropdown style="margin-left: 8px"></app-units-dropdown>
 </header>
 <router-outlet></router-outlet>

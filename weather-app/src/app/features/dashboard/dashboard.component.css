@@ -280,3 +280,17 @@
 .hero .save:hover {
   filter: brightness(1.1);
 }
+.search-row {
+  display: flex;
+  gap: 12px;
+  margin: 24px 0;
+  align-items: center;
+}
+
+.search-row app-search-bar {
+  flex: 1;
+}
+
+.search-row app-use-location button {
+  height: 100%;
+}

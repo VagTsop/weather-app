@@ -1,7 +1,10 @@
 <section class="page">
   <h1 class="title">How's the sky looking today?</h1>
-  <app-search-bar (select)="onPlace($event)"></app-search-bar>
-  <app-use-location (coords)="onGeo($event)"></app-use-location>
+  <div class="search-row">
+    <app-use-location (coords)="onGeo($event)"></app-use-location>
+
+    <app-search-bar (select)="onPlace($event)"></app-search-bar>
+  </div>
   <app-favorites-bar (open)="onFav($event)"></app-favorites-bar>
 
   <!-- LOADING -->

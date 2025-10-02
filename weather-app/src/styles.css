@@ -1,5 +1,16 @@
 /* GLOBAL ONLY: tokens, base, utilities */
-
+:root[data-theme="light"] {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #0b0d2a;
+  --muted: #5b6278;
+}
+:root[data-theme="dark"] {
+  --bg: #0b0d2a;
+  --card: #23253a;
+  --text: #ffffff;
+  --muted: #9aa0b4;
+}
 @font-face {
   font-family: "DM Sans";
   src: url("assets/fonts/DM_Sans/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype");

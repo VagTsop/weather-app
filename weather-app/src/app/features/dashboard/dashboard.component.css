@@ -294,3 +294,44 @@
 .search-row app-use-location button {
   height: 100%;
 }
+/* subtle animated layers per condition */
+@keyframes drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 1000px 0;
+  }
+}
+.bg-sunny {
+  background-image: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
+}
+.bg-cloudy,
+.bg-overcast {
+  background-image: linear-gradient(180deg, #3a3f62, #2b2e48);
+  background-size: 1200px 100%;
+  animation: drift 30s linear infinite;
+}
+.bg-rain {
+  background-image: linear-gradient(180deg, #2b2e48, #1f233a);
+  position: relative;
+  overflow: hidden;
+}
+.bg-rain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(transparent 0 24px, rgba(255, 255, 255, 0.08) 24px 26px);
+  animation: drift 4s linear infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.bg-snow {
+  background-image: linear-gradient(180deg, #3f4c6b, #2b5876);
+}
+.bg-storm {
+  background-image: linear-gradient(180deg, #1f2937, #0b0d2a);
+}
+.bg-fog {
+  background-image: linear-gradient(180deg, #4b5563, #374151);
+}

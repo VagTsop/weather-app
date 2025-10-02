@@ -74,6 +74,9 @@ export class WeatherService {
             precip: r.current.precipitation,
             code: r.current.weather_code,
             timeISO: r.current.time,
+            // ADD:
+            // @ts-ignore - extend interface or add optional field
+            isDay: r.current.is_day,
           };
           const daily: DailyItem[] = r.daily.time.map(
             (t: string, i: number) => ({

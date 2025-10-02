@@ -4,6 +4,7 @@
     <app-use-location (coords)="onGeo($event)"></app-use-location>
 
     <app-search-bar (select)="onPlace($event)"></app-search-bar>
+    <app-voice-search (text)="onVoice($event)"></app-voice-search>
   </div>
   <app-favorites-bar (open)="onFav($event)"></app-favorites-bar>
 
@@ -59,8 +60,11 @@
           <!-- LEFT -->
           <div>
             <!-- HERO -->
-            <!-- HERO -->
-            <div class="hero panel" *ngIf="store.current() as c">
+            <div
+              class="hero panel"
+              [ngClass]="bg(c.code)"
+              *ngIf="store.current() as c"
+            >
               <button
                 class="save"
                 (click)="saveCurrent()"

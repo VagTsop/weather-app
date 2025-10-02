@@ -12,6 +12,7 @@ export interface CurrentWeather {
   precip: number;
   code: number;
   timeISO: string;
+  isDay?: number;
 }
 export interface DailyItem {
   dateISO: string;

@@ -6,6 +6,11 @@ import { WeatherIconComponent } from '../../shared/components/weather-icon/weath
 import { UseLocationComponent } from '../../shared/components/use-location/use-location.component';
 import { FavoritesService } from '../../core/services/favorites.service';
 import { FavoritesBarComponent } from '../../shared/components/favorites-bar/favorites-bar.component';
+import { bgClassFromCode } from '../../core/utils/bg-class';
+import { VoiceSearchComponent } from '../../shared/components/voice-search/voice-search.component';
+import { GeoService } from '../../core/services/geo.service';
+
+const AUTO_GEO_KEY = 'autogeo.v1';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +22,7 @@ import { FavoritesBarComponent } from '../../shared/components/favorites-bar/fav
     WeatherIconComponent,
     UseLocationComponent,
     FavoritesBarComponent,
+    VoiceSearchComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
@@ -24,10 +30,50 @@ import { FavoritesBarComponent } from '../../shared/components/favorites-bar/fav
 export class DashboardComponent {
   store = inject(WeatherStore);
   hours = computed(() => this.store.hourlyForSelected());
+  bg: any;
   Math = Math;
   openDay = false;
+  private geo = inject(GeoService);
   constructor(private fav: FavoritesService, private storeSvc: WeatherStore) {}
 
+  ngOnInit() {
+    // If we already loaded something in this session, skip
+    if (this.store.coords()) return;
+
+    // Only try once across sessions
+    if (localStorage.getItem(AUTO_GEO_KEY)) return;
+    this.bg = bgClassFromCode; // expose to template
+
+    // Use Permissions API if available – only auto-run when granted/prompt
+    const run = () => {
+      if (!('geolocation' in navigator)) return;
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          localStorage.setItem(AUTO_GEO_KEY, '1');
+          this.store.city.set('My location');
+          this.store.fetch(pos.coords.latitude, pos.coords.longitude);
+        },
+        (_err) => {
+          localStorage.setItem(AUTO_GEO_KEY, '1');
+        },
+        { enableHighAccuracy: true, timeout: 8000 }
+      );
+    };
+
+    // Try to be polite: if Permissions API says "denied", don't prompt
+    (navigator as any).permissions
+      ?.query({ name: 'geolocation' as PermissionName })
+      .then((p: any) => {
+        if (p.state !== 'denied') run();
+      })
+      .catch(run);
+  }
+  onVoice(phrase: string) {
+    this.geo.search(phrase).subscribe((r) => {
+      const first = r?.[0];
+      if (first) this.onPlace(first);
+    });
+  }
   onPlace(p: { latitude: number; longitude: number; name: string }) {
     // Coerce to numbers and validate
     const lat = Number(p?.latitude);

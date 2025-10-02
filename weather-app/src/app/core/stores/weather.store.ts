@@ -7,6 +7,7 @@ import {
   HourlyItem,
   Units,
 } from '../models/weather.model';
+import { ThemeService } from '../services/theme.service';
 
 @Injectable({ providedIn: 'root' })
 export class WeatherStore {
@@ -21,7 +22,11 @@ export class WeatherStore {
   hourly = signal<HourlyItem[]>([]);
   selectedDay = signal<string | undefined>(undefined);
 
-  constructor(private api: WeatherService, private unitsStore: UnitsStore) {
+  constructor(
+    private api: WeatherService,
+    private unitsStore: UnitsStore,
+    private theme: ThemeService
+  ) {
     // REFRESH ON UNIT CHANGE — without touching coords (no loops)
     effect(() => {
       const units = this.unitsStore.units(); // track units
@@ -62,6 +67,9 @@ export class WeatherStore {
         this.daily.set(p.daily);
         this.hourly.set(p.hourly);
         this.selectedDay.set(p.daily[0]?.dateISO);
+        this.theme.applyByDay(
+          !!(p as any)?.current?.isDay || (p as any)?.current?.is_day === 1
+        );
         this.loading.set(false);
       },
       error: () => {

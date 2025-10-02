@@ -1,6 +1,7 @@
 <!-- src/app/app.html -->
 <header class="container">
   <img src="assets/logo.svg" alt="Weather Now" height="28" />
+
   <a
     routerLink="/compare"
     class="ml-auto"
@@ -13,6 +14,14 @@
     "
     >Compare</a
   >
+
   <app-units-dropdown style="margin-left: 8px"></app-units-dropdown>
+  <app-pwa-install style="margin-left: 8px"></app-pwa-install>
+
+  <!-- Theme toggles -->
+  <button style="margin-left: 8px" (click)="theme.set('auto')">Auto</button>
+  <button (click)="theme.set('light')">Light</button>
+  <button (click)="theme.set('dark')">Dark</button>
 </header>
+
 <router-outlet></router-outlet>

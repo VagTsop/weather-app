@@ -1,4 +1,5 @@
 export function bgClassFromCode(code: number): string {
+  // broaden as you like
   if ([0, 1].includes(code)) return 'bg-sunny';
   if ([2, 3].includes(code)) return 'bg-cloudy';
   if ([45, 48].includes(code)) return 'bg-fog';

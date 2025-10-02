@@ -1,4 +1,4 @@
-/* basic layout from earlier */
+/* ================== Base Layout ================== */
 .page {
   max-width: 1120px;
   margin: 24px auto;
@@ -26,16 +26,65 @@
   padding: 16px;
 }
 
-/* hero */
+/* ================== Hero (seamless sliding bg) ================== */
 .hero {
-  background: url("../../../assets/bg-today-large.svg") no-repeat center/cover;
+  /* background is drawn by ::before/::after for a perfect loop */
+  background: none;
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
   min-height: 180px;
   padding: 24px 28px;
   color: #fff;
+  position: relative;
+  overflow: hidden; /* hide offscreen background copy */
+  border-radius: 16px; /* keep rounded corners */
 }
+.hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Two copies of the same SVG slide together, no gap */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../../../assets/bg-today-large.svg") center / cover no-repeat;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  animation: heroSlide 60s linear infinite; /* adjust duration for speed */
+}
+.hero::after {
+  transform: translateX(100%);
+}
+
+@keyframes heroSlide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Optional: condition overlay layer (put <div class="anim-layer"></div> inside .hero) */
+.anim-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1; /* between bg (0) and content (2) */
+  opacity: 0.5;
+  background-repeat: repeat-x;
+  background-size: 800px 100%;
+  background-position: 0 0;
+  animation: bgScroll 60s linear infinite;
+  will-change: background-position, opacity;
+}
+
+/* Hero content bits */
 .hero-left .place {
   font-weight: 700;
   font-size: 20px;
@@ -54,8 +103,20 @@
   font-weight: 800;
   line-height: 1;
 }
+.hero .save {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 6px 10px;
+  color: #ffd76a;
+}
+.hero .save:hover {
+  filter: brightness(1.1);
+}
 
-/* kpis */
+/* ================== KPIs ================== */
 .tiles {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -81,7 +142,7 @@
   font-weight: 700;
 }
 
-/* daily */
+/* ================== Daily ================== */
 .section {
   margin: 20px 0 10px;
 }
@@ -117,7 +178,7 @@
   opacity: 0.65;
 }
 
-/* hourly */
+/* ================== Hourly ================== */
 .hourly-panel {
   padding: 16px;
 }
@@ -155,14 +216,12 @@
   margin-left: auto;
 }
 
-/* empty */
+/* ================== Empty & Error ================== */
 .empty {
   text-align: center;
   margin: 56px 0;
   font-weight: 700;
 }
-
-/* error */
 .error-wrap {
   display: flex;
   flex-direction: column;
@@ -194,7 +253,7 @@
   height: 16px;
 }
 
-/* skeletons */
+/* ================== Skeletons ================== */
 .skeleton {
   position: relative;
   overflow: hidden;
@@ -213,7 +272,6 @@
     transform: translateX(100%);
   }
 }
-
 .hero-skel {
   height: 200px;
   border-radius: 16px;
@@ -232,6 +290,8 @@
   height: 56px;
   border-radius: 12px;
 }
+
+/* ================== Day Menu ================== */
 .day-menu {
   position: relative;
 }
@@ -265,73 +325,79 @@
 .day-list button.active {
   background: #3a3f62;
 }
-.hero {
-  position: relative;
-}
-.hero .save {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  padding: 6px 10px;
-  color: #ffd76a;
-}
-.hero .save:hover {
-  filter: brightness(1.1);
-}
+
+/* ================== Search Row ================== */
 .search-row {
   display: flex;
   gap: 12px;
   margin: 24px 0;
   align-items: center;
 }
-
 .search-row app-search-bar {
   flex: 1;
 }
-
 .search-row app-use-location button {
   height: 100%;
 }
-/* subtle animated layers per condition */
-@keyframes drift {
+
+/* ================== Overlay Animations (optional) ================== */
+@keyframes bgScroll {
   from {
     background-position: 0 0;
   }
   to {
-    background-position: 1000px 0;
+    background-position: -800px 0;
   }
 }
-.bg-sunny {
-  background-image: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
-.bg-cloudy,
-.bg-overcast {
-  background-image: linear-gradient(180deg, #3a3f62, #2b2e48);
-  background-size: 1200px 100%;
-  animation: drift 30s linear infinite;
+
+/* ---- Condition-specific overlays for .anim-layer ---- */
+.bg-sunny .anim-layer {
+  background-image:
+    radial-gradient(2px 2px at 20% 35%, rgba(255, 255, 255, 0.65) 40%, transparent 41%),
+    radial-gradient(2px 2px at 70% 60%, rgba(255, 255, 255, 0.65) 40%, transparent 41%);
+  background-size:
+    800px 100%,
+    800px 100%;
+  animation:
+    bgScroll 90s linear infinite,
+    twinkle 3s ease-in-out infinite;
+  opacity: 0.5;
 }
-.bg-rain {
-  background-image: linear-gradient(180deg, #2b2e48, #1f233a);
-  position: relative;
-  overflow: hidden;
+.bg-cloudy .anim-layer,
+.bg-overcast .anim-layer {
+  background-image: linear-gradient(0deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07));
+  animation: bgScroll 70s linear infinite;
+  opacity: 0.35;
 }
-.bg-rain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(transparent 0 24px, rgba(255, 255, 255, 0.08) 24px 26px);
-  animation: drift 4s linear infinite;
-  pointer-events: none;
-  border-radius: inherit;
+.bg-rain .anim-layer {
+  background-image: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0 2px, transparent 2px 6px);
+  animation: bgScroll 40s linear infinite;
+  opacity: 0.45;
 }
-.bg-snow {
-  background-image: linear-gradient(180deg, #3f4c6b, #2b5876);
+.bg-snow .anim-layer {
+  background-image:
+    radial-gradient(3px 3px at 10% 10%, rgba(255, 255, 255, 0.9) 40%, transparent 41%),
+    radial-gradient(3px 3px at 70% 40%, rgba(255, 255, 255, 0.9) 40%, transparent 41%);
+  background-size:
+    800px 100%,
+    800px 100%;
+  animation:
+    bgScroll 120s linear infinite,
+    twinkle 4s ease-in-out infinite;
+  opacity: 0.6;
 }
-.bg-storm {
-  background-image: linear-gradient(180deg, #1f2937, #0b0d2a);
-}
-.bg-fog {
-  background-image: linear-gradient(180deg, #4b5563, #374151);
+.bg-storm .anim-layer {
+  background-image: linear-gradient(0deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07));
+  animation: bgScroll 110s linear infinite;
+  opacity: 0.25;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.5);
 }

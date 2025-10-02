@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { ThemeService } from './core/services/theme.service';
 import { UnitsDropdownComponent } from './shared/components/units-dropdown/units-dropdown.componet';
@@ -17,5 +17,5 @@ import { PwaInstallComponent } from './shared/components/pwa-install/pwa-install
 })
 export class AppComponent {
   // make it public so (click)="theme.set(...)" works in the template
-  constructor(public theme: ThemeService) {}
+  theme = inject(ThemeService); // used by the header buttons
 }

@@ -54,7 +54,7 @@ export class WeatherService {
       longitude: String(lo),
       timezone: 'auto',
       current:
-        'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation,weather_code',
+        'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation,weather_code,is_day',
       hourly: 'temperature_2m,weather_code',
       daily: 'temperature_2m_max,temperature_2m_min,weather_code',
       temperature_unit: units?.temp === 'f' ? 'fahrenheit' : 'celsius',

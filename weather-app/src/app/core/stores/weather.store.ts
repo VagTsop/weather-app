@@ -67,9 +67,7 @@ export class WeatherStore {
         this.daily.set(p.daily);
         this.hourly.set(p.hourly);
         this.selectedDay.set(p.daily[0]?.dateISO);
-        this.theme.applyByDay(
-          !!(p as any)?.current?.isDay || (p as any)?.current?.is_day === 1
-        );
+        this.theme.applyByIsDay(p.current.isDay);
         this.loading.set(false);
       },
       error: () => {

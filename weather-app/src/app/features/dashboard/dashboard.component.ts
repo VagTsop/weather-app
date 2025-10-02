@@ -9,6 +9,7 @@ import { FavoritesBarComponent } from '../../shared/components/favorites-bar/fav
 import { bgClassFromCode } from '../../core/utils/bg-class';
 import { VoiceSearchComponent } from '../../shared/components/voice-search/voice-search.component';
 import { GeoService } from '../../core/services/geo.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 const AUTO_GEO_KEY = 'autogeo.v1';
 
@@ -30,21 +31,22 @@ const AUTO_GEO_KEY = 'autogeo.v1';
 export class DashboardComponent {
   store = inject(WeatherStore);
   hours = computed(() => this.store.hourlyForSelected());
-  bg: any;
   Math = Math;
   openDay = false;
-  private geo = inject(GeoService);
-  constructor(private fav: FavoritesService, private storeSvc: WeatherStore) {}
+  bg = computed(() => bgClassFromCode(this.store.current()?.code ?? 0));
+
+  constructor(
+    private fav: FavoritesService,
+    private storeSvc: WeatherStore,
+    private theme: ThemeService,
+    private geo: GeoService
+  ) {}
+  AUTO_GEO_KEY = 'autogeo.v1';
 
   ngOnInit() {
-    // If we already loaded something in this session, skip
-    if (this.store.coords()) return;
+    if (this.store.coords()) return; // already loaded
+    if (localStorage.getItem(AUTO_GEO_KEY)) return; // tried before
 
-    // Only try once across sessions
-    if (localStorage.getItem(AUTO_GEO_KEY)) return;
-    this.bg = bgClassFromCode; // expose to template
-
-    // Use Permissions API if available – only auto-run when granted/prompt
     const run = () => {
       if (!('geolocation' in navigator)) return;
       navigator.geolocation.getCurrentPosition(
@@ -53,14 +55,12 @@ export class DashboardComponent {
           this.store.city.set('My location');
           this.store.fetch(pos.coords.latitude, pos.coords.longitude);
         },
-        (_err) => {
-          localStorage.setItem(AUTO_GEO_KEY, '1');
-        },
+        () => localStorage.setItem(AUTO_GEO_KEY, '1'),
         { enableHighAccuracy: true, timeout: 8000 }
       );
     };
 
-    // Try to be polite: if Permissions API says "denied", don't prompt
+    // If Permissions API is available, only run when not explicitly denied
     (navigator as any).permissions
       ?.query({ name: 'geolocation' as PermissionName })
       .then((p: any) => {
@@ -68,10 +68,28 @@ export class DashboardComponent {
       })
       .catch(run);
   }
+
   onVoice(phrase: string) {
-    this.geo.search(phrase).subscribe((r) => {
-      const first = r?.[0];
-      if (first) this.onPlace(first);
+    // Optionally normalize spaces & capitalization
+    const q = (phrase || '').trim();
+    if (!q) return;
+
+    this.geo.search(q).subscribe({
+      next: (results) => {
+        const first = results?.[0];
+        if (!first) {
+          // Optional: show a small UI notice/toast
+          console.warn('No results for voice query:', q);
+          return;
+        }
+        // Reuse your existing onPlace flow
+        this.onPlace({
+          latitude: first.latitude,
+          longitude: first.longitude,
+          name: first.name,
+        });
+      },
+      error: (err) => console.warn('Voice geocode failed:', err),
     });
   }
   onPlace(p: { latitude: number; longitude: number; name: string }) {

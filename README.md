@@ -67,7 +67,5 @@ Charts for hourly/daily trends
 
 Better accessibility support
 
-## 📄 License
-
 ```bash
 

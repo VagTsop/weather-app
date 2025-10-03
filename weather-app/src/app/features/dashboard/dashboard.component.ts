@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { WeatherStore } from '../../core/stores/weather.store';
 import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
@@ -34,6 +34,24 @@ export class DashboardComponent {
   Math = Math;
   openDay = false;
   bg = computed(() => bgClassFromCode(this.store.current()?.code ?? 0));
+  // --- paging ---
+  readonly pageSize = 8;
+  page = signal(0);
+  totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.hours().length / this.pageSize))
+  );
+  pagedHours = computed(() => {
+    const start = this.page() * this.pageSize;
+    return this.hours().slice(start, start + this.pageSize);
+  });
+  nextPage = () =>
+    this.page.update((p) => Math.min(p + 1, this.totalPages() - 1));
+  prevPage = () => this.page.update((p) => Math.max(p - 1, 0));
+  _resetOnDayChange = effect(() => {
+    this.store.selectedDay();
+    this.hours();
+    this.page.set(0);
+  });
 
   constructor(
     private fav: FavoritesService,

@@ -65,6 +65,12 @@
               [ngClass]="bg()"
               *ngIf="store.current() as c"
             >
+              <!-- background wrapper -->
+              <div class="hero-bg" aria-hidden="true">
+                <img src="../../../assets/bg-today-large.svg" alt="" />
+                <img src="../../../assets/bg-today-large.svg" alt="" />
+              </div>
+
               <button
                 class="save"
                 (click)="saveCurrent()"
@@ -153,10 +159,31 @@
                 </div>
                 }
               </div>
+
+              <!-- Pager buttons -->
+              <div class="pager">
+                <button
+                  class="chip"
+                  (click)="prevPage()"
+                  [disabled]="page() === 0"
+                >
+                  ◀
+                </button>
+                <span class="pager-info"
+                  >{{ page() + 1 }} / {{ totalPages() }}</span
+                >
+                <button
+                  class="chip"
+                  (click)="nextPage()"
+                  [disabled]="page() >= totalPages() - 1"
+                >
+                  ▶
+                </button>
+              </div>
             </div>
 
             <div class="hourly-list">
-              @for (h of hours(); track h.timeISO) {
+              @for (h of pagedHours(); track h.timeISO) {
               <div class="hour-row">
                 <div class="hour-time">{{ h.timeISO | date : "h a" }}</div>
                 <div class="hour-icon">

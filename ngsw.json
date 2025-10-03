@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1759505285559,
+  "timestamp": 1759505794101,
   "index": "/weather-app/index.html",
   "assetGroups": [
     {
@@ -15,7 +15,7 @@
         "/weather-app/chunk-TDZXY2GT.js",
         "/weather-app/favicon.ico",
         "/weather-app/index.html",
-        "/weather-app/main-HM64BW6J.js",
+        "/weather-app/main-BCCFNNOH.js",
         "/weather-app/manifest.webmanifest",
         "/weather-app/polyfills-5CFQRCPP.js",
         "/weather-app/styles-TDPB5BXL.css"
@@ -113,8 +113,8 @@
     "/weather-app/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/weather-app/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/weather-app/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/weather-app/index.html": "2f5dd90bd3a5ec1a424fc834eee61beae880bf96",
-    "/weather-app/main-HM64BW6J.js": "4a872d1af3ff76e8c9a7e330e92d65c9d0f94a14",
+    "/weather-app/index.html": "11aded1b61726f142a1e71a94b97a56d1c71fbff",
+    "/weather-app/main-BCCFNNOH.js": "edb2b0ad743152032433610443601ccdb2e9c4cb",
     "/weather-app/manifest.webmanifest": "ed71faf46507bd93523f82f99483acd18bcc893b",
     "/weather-app/media/BricolageGrotesque-VariableFont_opsz,wdth,wght-CUZXOZM5.ttf": "e10ab1194080615b513411fb615eaadb82cd5160",
     "/weather-app/media/DMSans-Italic-VariableFont_opsz,wght-MP53IA3G.ttf": "302139f48d4868cf07694d87f1f500cda55fadc9",

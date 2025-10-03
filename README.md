@@ -45,16 +45,6 @@ npm install
 
 ng serve
 
-src/
- ├── app/
- │   ├── core/           # services, stores, utils
- │   ├── features/
- │   │   ├── dashboard/  # main dashboard
- │   │   ├── compare/    # compare locations
- │   └── shared/         # reusable components
- ├── assets/             # icons, backgrounds
- └── styles.css
-
 ## 🛠️ Tech Stack
 
 Angular 16+

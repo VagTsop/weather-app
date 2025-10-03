@@ -79,10 +79,5 @@ Better accessibility support
 
 ## 📄 License
 
-
-👉 Save this content into a file called **`README.md`** in your project root. GitHub will automatically render it with the nice formatting.  
-
-Do you want me to also add **shields.io badges** (Angular, TypeScript, PWA, API) at the top for extra polish?
-
 ```bash
 

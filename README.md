@@ -1,6 +1,7 @@
 # 🌤️ Weather Now – Angular PWA
 
 A modern Progressive Web App (PWA) built with **Angular** that provides real-time weather forecasts, animated backgrounds, location search, voice input, favorites, and a compare mode for multiple places.  
+https://vagtsop.github.io/weather-app/
 
 ## ✨ Features
 

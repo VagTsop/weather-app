@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+};
 
 @Component({
   selector: 'app-pwa-install',
@@ -18,21 +22,37 @@ import { CommonModule } from '@angular/common';
     `,
   ],
 })
-export class PwaInstallComponent {
-  private promptEvent: any = null;
+export class PwaInstallComponent implements OnDestroy {
+  private promptEvent: BeforeInstallPromptEvent | null = null;
   can = false;
 
+  private readonly beforeInstallListener = (event: BeforeInstallPromptEvent) => {
+    event.preventDefault();
+    this.promptEvent = event;
+    this.can = true;
+  };
+
+  private readonly appInstalledListener = () => {
+    this.can = false;
+    this.promptEvent = null;
+  };
+
   constructor() {
-    window.addEventListener('beforeinstallprompt', (e: any) => {
-      e.preventDefault();
-      this.promptEvent = e;
-      this.can = true;
-    });
-    window.addEventListener('appinstalled', () => {
-      this.can = false;
-      this.promptEvent = null;
-    });
+    window.addEventListener(
+      'beforeinstallprompt',
+      this.beforeInstallListener as EventListener
+    );
+    window.addEventListener('appinstalled', this.appInstalledListener);
   }
+
+  ngOnDestroy(): void {
+    window.removeEventListener(
+      'beforeinstallprompt',
+      this.beforeInstallListener as EventListener
+    );
+    window.removeEventListener('appinstalled', this.appInstalledListener);
+  }
+
   async install() {
     await this.promptEvent?.prompt();
     this.can = false;

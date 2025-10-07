@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { ThemeService } from './core/services/theme.service';
-import { UnitsDropdownComponent } from './shared/components/units-dropdown/units-dropdown.componet';
+import { UnitsDropdownComponent } from './shared/components/units-dropdown/units-dropdown.component';
 import { PwaInstallComponent } from './shared/components/pwa-install/pwa-install.component';
 
 @Component({

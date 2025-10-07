@@ -14,12 +14,14 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should render the app header with branding', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Hello, weather-app'
-    );
+    const logo = compiled.querySelector('header img');
+
+    expect(logo).toBeTruthy();
+    expect(logo?.getAttribute('alt')).toBe('Weather Now');
+    expect(compiled.querySelector('header')?.textContent).toContain('Compare');
   });
 });
